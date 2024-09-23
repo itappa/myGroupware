@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Add New RSS Feed{% endblock %}
+
+{% block content %}
+<h1>Add New RSS Feed</h1>
+
+<form method="post" action="{% url 'rss_reader:add_feed' %}">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="url">Feed URL:</label>
+        <input type="url" class="form-control" id="url" name="url" required
+               placeholder="https://example.com/rss-feed">
+        <small class="form-text text-muted">Enter the URL of the RSS feed you want to add.</small>
+    </div>
+    <button type="submit" class="btn btn-primary">Add Feed</button>
+</form>
+
+<div class="mt-3">
+    <a href="{% url 'rss_reader:feed_list' %}" class="btn btn-secondary">Back to Feed List</a>
+</div>
+
+{% if messages %}
+<div class="messages mt-3">
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}">
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+{% endblock %}

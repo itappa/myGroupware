@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}{{ feed.title }} - Entries{% endblock %}
+
+{% block content %}
+<h1>{{ feed.title }}</h1>
+<p class="text-muted">{{ feed.description }}</p>
+
+<div class="feed-actions mb-3">
+    <a href="{% url 'rss_reader:feed_list' %}" class="btn btn-secondary">Back to Feed List</a>
+    <a href="{% url 'rss_reader:update_all_feeds' %}" class="btn btn-primary">Update Feed</a>
+</div>
+
+{% if entries %}
+    <div class="entry-list">
+    {% for entry in entries %}
+        <div class="entry-item card mb-3 {% if not entry.is_read %}border-primary{% endif %}">
+            <div class="card-body">
+                <h2 class="card-title">
+                    <a href="{{ entry.link }}" target="_blank" rel="noopener noreferrer">
+                        {{ entry.title }}
+                    </a>
+                </h2>
+                <p class="card-text">{{ entry.description|safe|truncatewords:50 }}</p>
+                <div class="card-footer text-muted">
+                    <small>Published: {{ entry.published_date|date:"F j, Y, g:i a" }}</small>
+                    {% if entry.author %}
+                        <small class="ml-2">Author: {{ entry.author }}</small>
+                    {% endif %}
+                    {% if not entry.is_read %}
+                        <a href="{% url 'rss_reader:mark_as_read' entry.id %}" class="btn btn-sm btn-outline-primary float-right">Mark as Read</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+{% else %}
+    <p>No entries found for this feed.</p>
+{% endif %}
+{% endblock %}

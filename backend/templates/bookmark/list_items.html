@@ -1,0 +1,27 @@
+{% extends "bookmark/bookmark_base.html" %}
+{% block content %}
+  <div class="grid grid-cols-1 sm;grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+    {% for item in items %}
+      <div class="max-w-sm bg-white rounded-lg shadow dark:bg-gray-800">
+        <a href="{{ item.url }}" target="_blank">
+          <img class="rounded-t-lg" src="{{ item.og_image }}" alt="" />
+          <div class="p-4">
+            <h5 class="mb-2 text-lg font-bold tracking-tight text-stone-700 dark:text-white">{{ item.title }}</h5>
+            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400"></p>
+            {% for tag in item.tags.all %}
+              <a href="#"
+                 class="bg-yellow-100 text-yellow-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-yellow-700 dark:text-yellow-300 border border-yellow-500">{{ tag.name }}</a>
+            {% endfor %}
+            {% if item.category %}
+              <a href="#"
+                 class="bg-green-100 text-green-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-green-700 dark:text-green-300 border border-green-500">{{ item.category }}</a>
+            {% endif %}
+          </div>
+        </a>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock content %}
+{% block pagination %}
+  {% include "pagination.html" with page_obj=items %}
+{% endblock pagination %}
